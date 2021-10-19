@@ -3,11 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Register</title>
 </head>
 
 <body>
-    <h1>Login</h1>
+    <h1>Register</h1>
     <form action="login.php" method="post">
         <label for="input-username">
             Username

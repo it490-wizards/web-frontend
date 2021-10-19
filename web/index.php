@@ -7,8 +7,13 @@
 </head>
 
 <body>
-    <h1>Sample text</h1>
-    <a href="login.php">Login</a>
+    <h1>Home</h1>
+    <p>
+        <a href="login.php">Login</a>
+    </p>
+    <p>
+        <a href="register.php">Register</a>
+    </p>
 </body>
 
 </html>
