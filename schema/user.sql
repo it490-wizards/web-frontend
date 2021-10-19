@@ -1,6 +1,6 @@
 CREATE TABLE user(
-    user_id     INT PRIMARY KEY,
-    username    VARCHAR(64),
-    password    CHAR(64),
-    salt        CHAR(16)
+    user_id         int PRIMARY KEY AUTO_INCREMENT,
+    username        varchar(64),
+    password_hash   binary(32), -- SHA-256 produces a 32-byte digest
+    salt            binary(16)
 );
