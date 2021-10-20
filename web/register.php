@@ -2,8 +2,11 @@
 require_once "db-login.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+
     $salt = random_bytes(16);
-    $password_hash = hash("sha256", $salt . $_POST["password"], true);
+    $password_hash = hash("sha256", $salt . $password, true);
 
     $query = $mysql->prepare(
         "INSERT INTO user(
@@ -14,8 +17,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ?, ?, ?
         )"
     );
-    $query->bind_param("sss", $_POST["username"], $password_hash, $salt);
-    $query->execute();
+    $query->bind_param("sss", $username, $password_hash, $salt);
+    if ($query->execute())
+        echo "Success";
+    else
+        echo "Failure";
 }
 ?>
 <!DOCTYPE html>
