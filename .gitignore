@@ -1,1 +1,2 @@
-web/db-login.php
+*.ini
+vendor/
