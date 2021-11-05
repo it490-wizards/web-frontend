@@ -15,12 +15,20 @@ class FibonacciRpcClient
 
     public function __construct()
     {
-        $this->connection = new AMQPStreamConnection(
-            'localhost',
-            5672,
-            'guest',
-            'guest'
-        );
+        $ini = parse_ini_file("rabbitmq.ini");
+
+        if ($ini)
+            [
+                "HOST" => $host,
+                "PORT" => $port,
+                "USER" => $user,
+                "PASSWORD" => $password,
+                "VHOST" => $vhost
+            ] = $ini;
+        else
+            die("Failed to parse rabbitmq.ini");
+
+        $this->connection = new AMQPStreamConnection($host, $port, $user, $password, $vhost);
         $this->channel = $this->connection->channel();
         list($this->callback_queue,,) = $this->channel->queue_declare(
             "",
