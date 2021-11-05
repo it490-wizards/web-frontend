@@ -1,24 +1,14 @@
 <?php
-require_once "db-login.php";
+
+require_once "../include/rpc_client.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
     $password = $_POST["password"];
 
-    $salt = random_bytes(16);
-    $password_hash = hash("sha256", $salt . $password, true);
+    $db_client = new DatabaseRpcClient();
 
-    $query = $mysql->prepare(
-        "INSERT INTO user(
-            username,
-            password_hash,
-            salt
-        ) VALUES (
-            ?, ?, ?
-        )"
-    );
-    $query->bind_param("sss", $username, $password_hash, $salt);
-    if ($query->execute())
+    if ($db_client->call("register", $username, $password))
         echo "Success";
     else
         echo "Failure";

@@ -1,35 +1,17 @@
 <?php
-require_once "db-login.php";
+
+require_once "../include/rpc_client.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
     $password = $_POST["password"];
 
-    $query = $mysql->prepare(
-        "SELECT
-            user_id,
-            username,
-            password_hash,
-            salt
-        FROM
-            user
-        WHERE
-            username=?
-        "
-    );
-    $query->bind_param("s", $username);
-    $query->execute();
-    $result = $query->get_result();
+    $db_client = new DatabaseRpcClient();
 
-    if (
-        $result
-        && ($user = $result->fetch_object())
-        && hash("sha256", $user->salt . $password, true) === $user->password_hash
-    ) {
+    if ($db_client->call("login", $username, $password))
         echo "Welcome {$user->username}!";
-    } else {
+    else
         echo "Incorrect username or password";
-    }
 }
 ?>
 <!DOCTYPE html>
