@@ -81,7 +81,3 @@ class DatabaseRpcClient
         return json_decode($this->response);
     }
 }
-
-$db_client = new DatabaseRpcClient();
-$response = $db_client->call("login", "test_user", "test_password");
-echo $response, PHP_EOL;

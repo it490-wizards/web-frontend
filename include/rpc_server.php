@@ -21,12 +21,7 @@ else
 $connection = new AMQPStreamConnection($host, $port, $user, $password, $vhost);
 $channel = $connection->channel();
 
-$channel->queue_declare('rpc_queue', false, false, false, false);
-
-function login($username, $password)
-{
-    return "TODO";
-}
+$channel->queue_declare("rpc_queue", false, false, false, false);
 
 echo " [x] Awaiting RPC requests", PHP_EOL;
 $callback = function ($req) {
