@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body>
     <h1>Login</h1>
-    <form action="login.php" method="post">
+    <form action="emitLogin.php" method="post">
         <label for="input-username">
             Username
             <input type="text" name="username" id="input-username">
@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             Password
             <input type="password" name="password" id="input-password">
         </label>
-        <input type="submit" value="Login">
+        <input type="submit" name="submit" value="Login">
     </form>
 </body>
 
