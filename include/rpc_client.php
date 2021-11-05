@@ -1,11 +1,11 @@
 <?php
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . "/vendor/autoload.php";
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
-class FibonacciRpcClient
+class DatabaseRpcClient
 {
     private $connection;
     private $channel;
@@ -39,45 +39,49 @@ class FibonacciRpcClient
         );
         $this->channel->basic_consume(
             $this->callback_queue,
-            '',
+            "",
             false,
             true,
             false,
             false,
-            array(
+            [
                 $this,
-                'onResponse'
-            )
+                "onResponse"
+            ]
         );
     }
 
     public function onResponse($rep)
     {
-        if ($rep->get('correlation_id') == $this->corr_id) {
+        if ($rep->get("correlation_id") == $this->corr_id) {
             $this->response = $rep->body;
         }
     }
 
-    public function call($n)
+    public function call($func, ...$args)
     {
         $this->response = null;
         $this->corr_id = uniqid();
 
         $msg = new AMQPMessage(
-            (string) $n,
-            array(
-                'correlation_id' => $this->corr_id,
-                'reply_to' => $this->callback_queue
-            )
+            json_encode([
+                "func" => $func,
+                "args" => $args
+            ]),
+            [
+                "correlation_id" => $this->corr_id,
+                "reply_to" => $this->callback_queue
+            ]
         );
-        $this->channel->basic_publish($msg, '', 'rpc_queue');
-        while (!$this->response) {
+        $this->channel->basic_publish($msg, "", "rpc_queue");
+        while (is_null($this->response)) {
             $this->channel->wait();
         }
-        return intval($this->response);
+
+        return json_decode($this->response);
     }
 }
 
-$fibonacci_rpc = new FibonacciRpcClient();
-$response = $fibonacci_rpc->call(30);
-echo ' [.] Got ', $response, "\n";
+$db_client = new DatabaseRpcClient();
+$response = $db_client->call("login", "test_user", "test_password");
+echo $response, PHP_EOL;

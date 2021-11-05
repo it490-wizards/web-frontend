@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . "/vendor/autoload.php";
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -23,37 +23,34 @@ $channel = $connection->channel();
 
 $channel->queue_declare('rpc_queue', false, false, false, false);
 
-function fib($n)
+function login($username, $password)
 {
-    if ($n == 0) {
-        return 0;
-    }
-    if ($n == 1) {
-        return 1;
-    }
-    return fib($n - 1) + fib($n - 2);
+    return "TODO";
 }
 
-echo " [x] Awaiting RPC requests\n";
+echo " [x] Awaiting RPC requests", PHP_EOL;
 $callback = function ($req) {
-    $n = intval($req->body);
-    echo ' [.] fib(', $n, ")\n";
+    echo $req->body, PHP_EOL;
+    $req_obj = json_decode($req->body);
+    $ret = call_user_func_array($req_obj->func, $req_obj->args);
 
     $msg = new AMQPMessage(
-        (string) fib($n),
-        array('correlation_id' => $req->get('correlation_id'))
+        json_encode($ret),
+        [
+            "correlation_id" => $req->get("correlation_id")
+        ]
     );
 
-    $req->delivery_info['channel']->basic_publish(
+    $req->delivery_info["channel"]->basic_publish(
         $msg,
-        '',
-        $req->get('reply_to')
+        "",
+        $req->get("reply_to")
     );
     $req->ack();
 };
 
 $channel->basic_qos(null, 1, null);
-$channel->basic_consume('rpc_queue', '', false, false, false, false, $callback);
+$channel->basic_consume("rpc_queue", "", false, false, false, false, $callback);
 
 while ($channel->is_open()) {
     $channel->wait();
