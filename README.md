@@ -30,4 +30,4 @@ $db_client = new DatabaseRpcClient();
 $db_client->call("login", $username, $password); // example
 ```
 
-This design pattern is known as *remote procedure calling* (RPC). The files [`rpc_client.php`](include/rpc_client.php) and [`rpc_server.php`](include/rpc_server.php) were adapted from this official [RabbitMQ tutorial](https://www.rabbitmq.com/tutorials/tutorial-six-php.html).
+This design pattern is known as *remote procedure calling* (RPC). The files [`rpc_client.php`](include/rpc_client.php) and [`rpc_server.php`](sample/rpc_server.php) were adapted from this official [RabbitMQ tutorial](https://www.rabbitmq.com/tutorials/tutorial-six-php.html).
