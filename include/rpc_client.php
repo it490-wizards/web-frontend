@@ -15,7 +15,7 @@ class DatabaseRpcClient
 
     public function __construct()
     {
-        $ini = parse_ini_file("rabbitmq.ini");
+        $ini = parse_ini_file(__DIR__ . "/../rabbitmq.ini");
 
         if ($ini)
             [
