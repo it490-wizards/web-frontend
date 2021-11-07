@@ -1,6 +1,6 @@
 <?php
 
-require_once "../include/rpc_client.php";
+require_once __DIR__ . "/../include/rpc_client.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
@@ -8,10 +8,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $db_client = new DatabaseRpcClient();
 
-    if ($db_client->call("register", $username, $password))
+    if ($db_client->call("register", $username, $password)) {
         echo "Success";
-    else
+    } else {
         echo "Failure";
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -33,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             Password
             <input type="password" name="password" id="input-password">
         </label>
-        <input type="submit" value="Login">
+        <input type="submit" value="Register">
     </form>
 </body>
 

@@ -1,3 +1,6 @@
+<?php
+$session_token = $_COOKIE["session_token"];
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,12 +11,13 @@
 
 <body>
     <h1>Home</h1>
-    <p>
+    <?php if ($session_token === null) { ?>
         <a href="login.php">Login</a>
-    </p>
-    <p>
         <a href="register.php">Register</a>
-    </p>
+    <?php } else { ?>
+        <a href="logout.php"> Logout</a>
+    <?php } ?>
+
 </body>
 
 </html>
