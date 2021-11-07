@@ -1,17 +1,20 @@
 <?php
 
-require_once "../include/rpc_client.php";
+require_once __DIR__ . "/../include/rpc_client.php";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $username = $_POST["username"];
     $password = $_POST["password"];
 
     $db_client = new DatabaseRpcClient();
+    $session_token = $db_client->call("login", $username, $password);
 
-    if ($db_client->call("login", $username, $password))
-        echo "Welcome {$user->username}!";
-    else
+    if ($session_token === null) {
         echo "Incorrect username or password";
+    } else {
+        setcookie("session_token", $session_token);
+        header("Location: /");
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -24,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body>
     <h1>Login</h1>
-    <form action="emitLogin.php" method="post">
+    <form action="login.php" method="post">
         <label for="input-username">
             Username
             <input type="text" name="username" id="input-username">
@@ -33,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             Password
             <input type="password" name="password" id="input-password">
         </label>
-        <input type="submit" name="submit" value="Login">
+        <input type="submit" value="Login">
     </form>
 </body>
 
