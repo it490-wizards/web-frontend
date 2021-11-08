@@ -26,8 +26,13 @@ $channel->queue_declare("rpc_queue", false, false, false, false);
 echo " [x] Awaiting RPC requests", PHP_EOL;
 $callback = function ($req) {
     echo $req->body, PHP_EOL;
-    $req_obj = json_decode($req->body);
-    $ret = call_user_func_array($req_obj->func, $req_obj->args);
+    try {
+        $req_obj = json_decode($req->body);
+        $ret = call_user_func_array($req_obj->func, $req_obj->args);
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        $ret = null;
+    }
 
     $msg = new AMQPMessage(
         json_encode($ret),
