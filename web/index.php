@@ -1,5 +1,5 @@
 <?php
-$session_token = $_COOKIE["session_token"];
+$session_token = $_COOKIE["session_token"] ?? null;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,7 +17,6 @@ $session_token = $_COOKIE["session_token"];
     <?php } else { ?>
         <a href="logout.php"> Logout</a>
     <?php } ?>
-
 </body>
 
 </html>

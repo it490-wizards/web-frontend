@@ -2,7 +2,7 @@
 
 require_once __DIR__ . "/../include/rpc_client.php";
 
-$session_token = $_COOKIE["session_token"];
+$session_token = $_COOKIE["session_token"] ?? null;
 
 $db_client = new DatabaseRpcClient();
 $db_client->call("logout", $session_token);
