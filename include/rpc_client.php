@@ -17,7 +17,10 @@ class DatabaseRpcClient
     {
         $ini = parse_ini_file(__DIR__ . "/../rabbitmq.ini");
 
-        if ($ini)
+        if ($ini === false) {
+            http_response_code(500);
+            die();
+        } else {
             [
                 "HOST" => $host,
                 "PORT" => $port,
@@ -25,10 +28,15 @@ class DatabaseRpcClient
                 "PASSWORD" => $password,
                 "VHOST" => $vhost
             ] = $ini;
-        else
-            die("Failed to parse rabbitmq.ini");
+        }
 
-        $this->connection = new AMQPStreamConnection($host, $port, $user, $password, $vhost);
+        $this->connection = new AMQPStreamConnection(
+            $host,
+            $port,
+            $user,
+            $password,
+            $vhost
+        );
         $this->channel = $this->connection->channel();
         list($this->callback_queue,,) = $this->channel->queue_declare(
             "",
@@ -74,7 +82,7 @@ class DatabaseRpcClient
             ]
         );
         $this->channel->basic_publish($msg, "", "rpc_queue");
-        while (is_null($this->response)) {
+        while ($this->response === null) {
             $this->channel->wait();
         }
 
