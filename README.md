@@ -8,15 +8,15 @@ Install the PHP dependencies using [composer](https://getcomposer.org/).
 composer install
 ```
 
-Create an initialization file `rabbitmq.ini` which contains your RabbitMQ credentials. For example:
+Create an initialization file `rabbitmq.ini` which contains RabbitMQ credentials separated into sections. Only one section is needed for database communication. For example:
 
 ```ini
-[rabbitmq]
-HOST="localhost"
-PORT=5672
-USER="guest"
-PASSWORD="guest"
-VHOST="/"
+[database]
+host = localhost
+port = 5672
+user = guest
+password = guest
+vhost = /
 ```
 
 ## Database Integration

@@ -15,19 +15,19 @@ class DatabaseRpcClient
 
     public function __construct()
     {
-        $ini = parse_ini_file(__DIR__ . "/../rabbitmq.ini");
+        $ini = parse_ini_file(__DIR__ . "/../rabbitmq.ini", true);
 
         if ($ini === false) {
             http_response_code(500);
             die();
         } else {
             [
-                "HOST" => $host,
-                "PORT" => $port,
-                "USER" => $user,
-                "PASSWORD" => $password,
-                "VHOST" => $vhost
-            ] = $ini;
+                "host" => $host,
+                "port" => $port,
+                "user" => $user,
+                "password" => $password,
+                "vhost" => $vhost
+            ] = $ini["database"];
         }
 
         $this->connection = new AMQPStreamConnection(

@@ -5,18 +5,19 @@ require_once __DIR__ . "/../vendor/autoload.php";
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
-$ini = parse_ini_file(__DIR__ . "/../rabbitmq.ini");
+$ini = parse_ini_file(__DIR__ . "/../rabbitmq.ini", true);
 
-if ($ini)
-    [
-        "HOST" => $host,
-        "PORT" => $port,
-        "USER" => $user,
-        "PASSWORD" => $password,
-        "VHOST" => $vhost
-    ] = $ini;
-else
+if ($ini === false) {
     die("Failed to parse rabbitmq.ini");
+} else {
+    [
+        "host" => $host,
+        "port" => $port,
+        "user" => $user,
+        "password" => $password,
+        "vhost" => $vhost
+    ] = $ini["database"];
+}
 
 $connection = new AMQPStreamConnection($host, $port, $user, $password, $vhost);
 $channel = $connection->channel();
