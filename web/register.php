@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             Password
             <input type="password" name="password" id="input-password">
         </label>
-        <input type="submit" value="Register">
+        <input type="submit" value="Register" >
     </form>
 </body>
 

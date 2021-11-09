@@ -1,42 +1,46 @@
 <?php 
 
 $session_token = $_COOKIE["session_token"];
-require_once "../include/rpc_client.php";
+require_once __DIR__ . "/../include/rpc_client.php";
 
 $db_client = new DatabaseRpcCLient();
-$userID=$db_client->call("session_to_userid", $session_token);
-
+//$userID=$db_client->call("session_to_userid", $session_token);
+$userID=19;
 if(isset($_POST["submit"])){ 
 
-  $movieID = $_POST["hidden_movieID"];
+  $movieID = (int)$_POST["hidden_movieID"];
   $reviewText=$_POST["reviewText"];
 
   if(isset($_POST["btnradio"])){
       switch($_POST["btnradio"]){
         case "1":
-          $reviewRating="1";
+          $reviewRating=1;
           break;
         case "2":
-          $reviewRating="2";
+          $reviewRating=2;
           break;
         case "3":
-          $reviewRating="3";
+          $reviewRating=3;
           break;
         case "4":
-          $reviewRating="4";
+          $reviewRating=4;
           break;
         case "5":
-          $reviewRating="5";
+          $reviewRating=5;
           break;
       }
-
+  }  
   if(isset($_POST["checkbox"])&&($_POST["checkbox"])=="Yes"){
-    if(!isset($_POST["btnradio"]) && ((!isset($_POST["reviewText"]) || ($_POST["reviewText"])==""))){
-      $response=$db_client->call("addSaved",$movieID,$userID);
-    }else{
-      $response=$db_client->call("addReview",$userID,$movieID,$reviewRating,$reviewText);
-    }
-  } 
+    //if(!isset($_POST["btnradio"]) && ((!isset($_POST["reviewText"]) || ($_POST["reviewText"])==""))){
+      $response=$db_client->call("addSaved",$userID,$movieID);
+      echo "we gettin here?";
+
+    //}
+  }
+  else{
+    $response=$db_client->call("addReview",$movieID, $userID,$reviewRating,$reviewText);
+  }
+
 }
 ?>	
 <!doctype html>
@@ -53,7 +57,7 @@ if(isset($_POST["submit"])){
   <title>Home</title>
 </head>
 <body>
-  <nav class="navbar navbar-light bg-primary navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-dark bg-dark navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="home.php">Cinema5D</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,13 +66,13 @@ if(isset($_POST["submit"])){
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="home.php">Home</a>
+            <a class="nav-link active" aria-current="page" href="home.php">Home   </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link " href="profile.php">Profile</a>
+            <a class="nav-link " href="profile.php">Profile   </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="http://forum.localhost">Forum</a>
+            <a class="nav-link" href="forum">Forum   </a>
           </li>
         </ul>
       </div>
@@ -80,10 +84,8 @@ if(isset($_POST["submit"])){
   <div class="container" style="width:700px;">  
     <?php
     
-    $response1=$db_client->call("getRecommended",$userID);
-    $responseReadable1=json_decode($response1);
-
-    foreach($responseReadable1 as $attribute){
+    $response1=$db_client->call("getRecommended",$userID);  
+    foreach($response1 as $attribute){
     ?> 
     <div class="col-md-4">
           <form action="home.php" method="post">  
@@ -116,7 +118,7 @@ if(isset($_POST["submit"])){
                 </textarea>
                 <input type="hidden" name="hidden_title" value="<?php echo $attribute->title; ?>" />  
                 <input type="hidden" name="hidden_description" value="<?php echo $attribute->description; ?>" />
-                <input type="hidden" name="hidden_movieID" value="<?php echo $attribute->movieID; ?>" />  
+                <input type="hidden" name="hidden_movieID" value="<?php echo $attribute->movie_id; ?>" />  
                 <input type="submit" name="submit" style="margin-top:5px;" class="btn btn-success" value="Submit" />  
             </div>  
         </form>  
@@ -125,7 +127,7 @@ if(isset($_POST["submit"])){
     } 
     ?> 
 
-    <nav aria-label="Page navigation example">
+    <!-- <nav aria-label="Page navigation example"> 
 					<div class = "text-center">
 					<ul class="pagination">
 						<li class="page-item">
@@ -148,7 +150,7 @@ if(isset($_POST["submit"])){
 						</li>
 					</ul>
 				</div>
-				</nav>
+				</nav>-->
 </div>			
 </body>
 </html>
