@@ -13,9 +13,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($db_client->call("register", $username, $password, $email)) {
         echo "Success";
-    } else {
-        echo "Failure";
-    }
+    } //else {
+    //     echo "Failure";
+    // }
 }
 ?>
 <!DOCTYPE html>

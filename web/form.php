@@ -1,9 +1,14 @@
 <?php
 
 require_once __DIR__ . "/../include/rpc_client.php";
-$session_token = $_COOKIE["session_token"];
+$session_token = $_COOKIE["session_token"]??null;
 $db_client = new DatabaseRpcCLient();
 $userID=$db_client->call("session_to_userid", $session_token);
+if ($userID===0){
+   http_response_code(403);
+   die();
+}
+
 //$userID=19;
 if(isset($_POST["submit"])){ 
 

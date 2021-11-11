@@ -9,7 +9,7 @@ $session_token = $_COOKIE["session_token"];
 </head>
 <body>
     <h1>Home</h1>
-    <?php if ($session_token === null) { ?>
+    <?php if ($session_token === null || $session_token===0) { ?>
         <a href="login.php">Login</a>
         <a href="register.php">Register</a> 
     <?php } else { ?>

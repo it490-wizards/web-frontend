@@ -9,8 +9,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $db_client = new DatabaseRpcClient();
     $session_token = $db_client->call("login", $username, $password);
     
-    if ($session_token==0 || $session_token===null) {
-        header("Location: /login.php");
+    if ($session_token===0 || $session_token===null) {
+        
         echo "Incorrect username or password";
 
     } else {
