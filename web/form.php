@@ -1,14 +1,14 @@
 <?php
 
-require_once "../include/rpc_client.php";
+require_once __DIR__ . "/../include/rpc_client.php";
 $session_token = $_COOKIE["session_token"];
 $db_client = new DatabaseRpcCLient();
 $userID=$db_client->call("session_to_userid", $session_token);
-
+//$userID=19;
 if(isset($_POST["submit"])){ 
 
-$duration=$_POST["duration"];
-$year=$_POST["era"];
+$duration=(int)$_POST["duration"];
+$year=(int)$_POST["era"];
 $language=$_POST["language"];
 $genre =$_POST["genre"];
 
@@ -70,21 +70,21 @@ $response=$db_client->call("addForm",$userID,$genre,$duration,$year,$language);
                      <div class="form-group">
                         <label>What's the longest runtime for a movie that you'd be interested in?</label>
                         <select name="duration" id="duration" class="form-control" required>
-                           <option value="60">60 minutes</option>
-                           <option value="100">100 minutes</option>
-                           <option value="120">120 minutes</option>
-                           <option value="150">150 minutes</option>
-                           <option value="180">180 minutes</option>
+                           <option type = "number" value="60">60 minutes</option>
+                           <option type = "number" value="100">100 minutes</option>
+                           <option type = "number" value="120">120 minutes</option>
+                           <option type = "number" value="150">150 minutes</option>
+                           <option type = "number" value="180">180 minutes</option>
                         </select>
                      </div>
                      <div class="form-group">
                         <label>Do you like movies from a specific decade?</label>
                         <select name="era" id="era" class="form-control" required>
-                           <option value="1970">70s</option>
-                           <option value="1980">80s</option>
-                           <option value="1990">90s</option>
-                           <option value="2000">2000s</option>
-                           <option value="2010">2010s</option>
+                           <option type = "number" value="1970">70s</option>
+                           <option type = "number" value="1980">80s</option>
+                           <option type = "number" value="1990">90s</option>
+                           <option type = "number" value="2000">2000s</option>
+                           <option type = "number" value="2010">2010s</option>
                         </select>
                      </div>
                      <div class="form-group">
@@ -108,8 +108,8 @@ $response=$db_client->call("addForm",$userID,$genre,$duration,$year,$language);
                            <option value="Science Fiction">Science Fiction</option>
                            <option value="Drama">Drama</option>
                         </select>
+                        <input type="submit" name="submit" style="margin-top:5px;" href = "home.php" class="btn btn-success" value="Go to Recommended Movies!" />  
                      </div>
-                     <input type="submit" class="btn btn-primary" name="submit" value="Submit">
                   </form>
                </div>
             </div>

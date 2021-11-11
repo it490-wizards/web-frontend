@@ -8,9 +8,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $db_client = new DatabaseRpcClient();
     $session_token = $db_client->call("login", $username, $password);
-
-    if ($session_token === null) {
+    
+    if ($session_token==0 || $session_token===null) {
+        header("Location: /login.php");
         echo "Incorrect username or password";
+
     } else {
         setcookie("session_token", $session_token);
         header("Location: /");
@@ -39,5 +41,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <input type="submit" value="Login">
     </form>
 </body>
-
 </html>

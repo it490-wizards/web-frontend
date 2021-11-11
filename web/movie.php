@@ -1,11 +1,11 @@
 <?php
 
 $session_token = $_COOKIE["session_token"];
-require_once "../include/rpc_client.php";
+require_once __DIR__ . "/../include/rpc_client.php";
 
 $db_client = new DatabaseRpcCLient();
 $userID=$db_client->call("session_to_userid", $session_token);
-
+//$userID=19;
 ?>
 
 <!doctype html>
@@ -33,7 +33,7 @@ $userID=$db_client->call("session_to_userid", $session_token);
             <a class="nav-link " href="profile.php">Profile</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="http://forum.localhost">Forum</a>               
+            <a class="nav-link" href="forum">Forum</a>               
           </li>
         </ul>
       </div>
@@ -43,21 +43,20 @@ $userID=$db_client->call("session_to_userid", $session_token);
   <br></br>
   <h6 style="margin-left:20px">All Reviews</h6>
   <?php
-     $movieID=$_GET["movieID"]; //gets from URL
+     $movieID=(int)$_GET["movie_id"]; //gets from URL
      $response1=$db_client->call("getMovie",$movieID);
-     $responseReadable1=json_decode($response1);
 
-     foreach($responseReadable1 as $attribute1){
+     foreach($response1 as $attribute1){
+       
   ?> 
 <h5 class="text-info"><?php echo $attribute1->title;?></h5>
 <h5 class="text-info"><?php echo $attribute1->description;?></h5>
 <?php } ?>
   <div class="container" style="height:90vh;">
   <?php
-    $response2=$db_client->call("getAllReviews",$userID, $movieID);
-    $responseReadable2=json_decode($response2);
+    $response2=$db_client->call("getAllReviews", $movieID);
 
-    foreach($responseReadable2 as $attribute2){
+    foreach($response2 as $attribute2){
   ?> 
     <div class="col-md-4">  
       <form method="POST">

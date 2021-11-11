@@ -1,7 +1,7 @@
 <?php
 
-require_once __DIR__ . "/vendor/autoload.php";
-
+//require_once __DIR__ . "/../vendor/autoload.php";
+require "../include/vendor/autoload.php";
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -15,7 +15,7 @@ class DatabaseRpcClient
 
     public function __construct()
     {
-        $ini = parse_ini_file("rabbitmq.ini");
+        $ini = parse_ini_file(__DIR__ . "/../rabbitmq.ini");
 
         if ($ini)
             [

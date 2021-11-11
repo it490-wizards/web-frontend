@@ -1,38 +1,38 @@
 <?php 
 
 $session_token = $_COOKIE["session_token"];
-require_once "../include/rpc_client.php";
+require_once __DIR__ . "/../include/rpc_client.php";
 
 $db_client = new DatabaseRpcCLient();
 $userID=$db_client->call("session_to_userid", $session_token);
-
+//$userID=19;
+echo $userID;
 if(isset($_POST["submit"])){ 
 
-  $movieID = $_POST["hidden_movieID"];
+  $movieID = (int)$_POST["hidden_movieID"];
   $reviewText=$_POST["reviewText"];
 
   if(isset($_POST["btnradio"])){
       switch($_POST["btnradio"]){
         case "1":
-          $reviewRating="1";
+          $reviewRating=1;
           break;
         case "2":
-          $reviewRating="2";
+          $reviewRating=2;
           break;
         case "3":
-          $reviewRating="3";
+          $reviewRating=3;
           break;
         case "4":
-          $reviewRating="4";
+          $reviewRating=4;
           break;
         case "5":
-          $reviewRating="5";
+          $reviewRating=5;
           break;
       }
   }
   $response=$db_client->call("addReview",$userID,$movieID,$reviewRating,$reviewText);
 } 
-
 ?>
 
 <!doctype html>
@@ -65,7 +65,7 @@ if(isset($_POST["submit"])){
             <a class="nav-link active" href="profile.php">Profile</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="http://forum.localhost">Forum</a>
+            <a class="nav-link" href="forum">Forum</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="logout.php">Logout</a>
@@ -92,17 +92,15 @@ if(isset($_POST["submit"])){
   <div class="container" style="width:700px;">
   <?php
 
-$response1=$db_client->call("getRecommended",$userID);
-$responseReadable1=json_decode($response1);
-
-foreach($responseReadable1 as $attribute1){
+$response1=$db_client->call("getSaved",$userID);
+foreach($response1 as $attribute1){
 ?> 
 <div class="col-md-4">
       <form action="home.php" method="post">  
         <div style="border:1px solid #333; background-color:#f1f1f1; border-radius:5px; padding:16px;" align="center">  
             <!--<img src="<?//php echo $row["imageLink"]; ?>" class="img-responsive" /><br /> --> 
-            <h4 class="text-info"><?php echo $attribute->title; ?></h4>  
-            <h4 class="text-info"><?php echo $attribute->description; ?></h4>  
+            <h4 class="text-info"><?php echo $attribute1->title; ?></h4>  
+            <h4 class="text-info"><?php echo $attribute1->description; ?></h4>  
             <h4>Rate This Movie!</h4>
                 <div class="btn-group" style="height:3rem; padding:5px;" role="group" aria-label="Basic radio toggle button group">
                     
@@ -121,13 +119,13 @@ foreach($responseReadable1 as $attribute1){
                     <input type="radio" class="btn-check" name="btnradio" id="btnradio5" value="5"autocomplete="off" >
                     <label class="btn btn-outline-primary" for="btnradio5">⭐⭐⭐⭐⭐ </label>
                 </div>
-            <textarea class="form-control" name="reviewText" id="reviewText" aria-label="With textarea" rows="4" cols="50"
-            Write your review...
-            </textarea>
-            <input type="hidden" name="hidden_title" value="<?php echo $attribute->title; ?>" />  
-            <input type="hidden" name="hidden_description" value="<?php echo $attribute->description; ?>" />
-            <input type="hidden" name="hidden_movieID" value="<?php echo $attribute->movieID; ?>" />  
-            <input type="submit" name="submit" style="margin-top:5px;" class="btn btn-success" value="Submit" />  
+                <textarea class="form-control" name="reviewText" id="reviewText" aria-label="With textarea" rows="4" cols="50">
+                Write your review...
+                </textarea>
+            <input type="hidden" name="hidden_title" value="<?php echo $attribute1->title; ?>" />  
+            <input type="hidden" name="hidden_description" value="<?php echo $attribute1->description; ?>" />
+            <input type="hidden" name="hidden_movieID" value="<?php echo $attribute1->movie_id; ?>" />  
+            <input type="submit" name="submit" style="margin-top:5px;" class="btn btn-success" value="submit" />  
         </div>  
     </form>  
 </div> 
@@ -144,10 +142,8 @@ foreach($responseReadable1 as $attribute1){
 <div class="container">
   <?php
 
-$response2=$db_client->call("getRecommended",$userID);
-$responseReadable2=json_decode($response2);
-
-foreach($responseReadable2 as $attribute2){
+$response2=$db_client->call("getReviews",$userID);
+foreach($response2 as $attribute2){
 
   ?> 
     <div class="col-md-4">  
@@ -160,8 +156,8 @@ foreach($responseReadable2 as $attribute2){
                 <h4 class="text-info">$ <?php echo $attribute2->reviewText; ?></h4>  
                 <input type="hidden" name="hidden_title" value="<?php echo $attribute2->title; ?>" />  
                 <input type="hidden" name="hidden_description" value="<?php echo $attribute->description; ?>" />
-                <input type="hidden" name="hidden_movieID" value="<?php echo $attribute2->movieID; ?>" />  
-                <input type="submit" name="submit" href="movie.php?movieID=<?php echo $attribute2->movieID?> "style="margin-top:5px;" class="btn btn-success" value="See what other people are saying!" />  
+                <input type="hidden" name="hidden_movieID" value="<?php echo $attribute2->movie_id; ?>" />  
+                <a type="button" href="movie.php?movie_id=<?php echo $attribute2->movie_id;?>"style="margin-top:5px;" class="btn btn-success">See what other people are saying!</a>  
             </div> 
         </form> 
     </div> 
