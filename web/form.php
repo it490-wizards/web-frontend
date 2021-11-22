@@ -23,47 +23,43 @@ $response=$db_client->call("addForm",$userID,$genre,$duration,$year,$language);
 <!DOCTYPE html>
 <html lang="en">
    <head>
-      <meta charset="UTF-8">
-      <title>Create Form</title>
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-      <style type="text/css">
-         .wrapper{
-         width: 500px;
-         margin: 0 auto;
-         background-color:#337ab7;
-		 
-         }
-         .btn-primary {
-         color: #fff;
-         background-color: #333;
-         border-color: #2e6da4;
-         }
-         body {
-         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-         font-size: 14px;
-         line-height: 1.42857143;
-         color: #333;
-         background-color: #b3e5fc;
-         }
-		 .container-fluid {
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
-	
-    padding-top: 0px;
-    background-color: #ff5722;
-}
-.centered {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  /* bring your own prefixes */
-  transform: translate(-50%, -50%);
-}
-      </style>
+    <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+   <title>Select Your Preferences!</title>
    </head>
    <body>
+
+   <nav class="navbar navbar-light bg-primary navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="home.php">Cinema5D</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link " aria-current="page" href="home.php">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="profile.php">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="forum">Forum</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="logout.php">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+   
+  
       <div class="wrapper">
          <div class="container-fluid">
             <div class="row">
@@ -120,5 +116,7 @@ $response=$db_client->call("addForm",$userID,$genre,$duration,$year,$language);
             </div>
          </div>
       </div>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
    </body>
 </html>

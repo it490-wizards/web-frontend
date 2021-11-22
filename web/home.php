@@ -55,9 +55,7 @@ if(isset($_POST["submit"])){
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Bootstrap CSS -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>  
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />  
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
   <title>Home</title>
 </head>
 <body>
@@ -76,7 +74,7 @@ if(isset($_POST["submit"])){
             <a class="nav-link " href="profile.php">Profile   </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="forum">Forum   </a>
+            <a class="nav-link" href="forum">Forum</a>
           </li>
         </ul>
       </div>
@@ -86,37 +84,36 @@ if(isset($_POST["submit"])){
   <h3 style="margin-left:20px">Recommended Movies!</h3>
   <hr></hr>
   <div class="container" style="width:700px;">  
+
     <?php
-    
     $response1=$db_client->call("getRecommended",$userID);  
     foreach($response1 as $attribute){
     ?> 
-    <div class="col-md-4">
+    <div class = "container">
           <form action="home.php" method="post">  
-            <div style="border:1px solid #333; background-color:#f1f1f1; border-radius:5px; padding:16px;" align="center">  
-                <!--<img src="<?//php echo $row["imageLink"]; ?>" class="img-responsive" /><br /> --> 
-                <h4 class="text-info"><?php echo $attribute->title; ?></h4>  
-                <h4 class="text-info">$ <?php echo $attribute->description; ?></h4>  
-                <label for="flexCheckChecked">Save to Your Watch/Review Later Library?</label>
+
+            <div class="card" style="width: 40vw;">
+          <div class="card-body">
+          <h4 class="card-title"><?php echo $attribute->title; ?></h4>  
+          <h6 class="card-subtitle mb-2 text-muted"><?php echo $attribute->description; ?></h6>
+          <label for="flexCheckChecked">Save to Your Watch/Review Later Library?</label>
                 <input type="checkbox" name = "checkbox" value="Yes" id="flexCheckChecked" />
                 <h4>Rate This Movie!</h4>
-                    <div class="btn-group" style="height:3rem; padding:5px;" role="group" aria-label="Basic radio toggle button group">
-                        
-                        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" value="1" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="btnradio1">⭐</label>
 
-                        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" value="2" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="btnradio2">⭐⭐ </label>
-
-                        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" value="3" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="btnradio3">⭐⭐⭐ </label>
-                                        
-                        <input type="radio" class="btn-check" name="btnradio" id="btnradio4" value="4"autocomplete="off">					
-                        <label class="btn btn-outline-primary" for="btnradio4">⭐⭐⭐⭐ </label>
-
-                        <input type="radio" class="btn-check" name="btnradio" id="btnradio5" value="5"autocomplete="off" >
-                        <label class="btn btn-outline-primary" for="btnradio5">⭐⭐⭐⭐⭐ </label>
-                    </div>
+                <div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <label class="input-group-text" for="inputGroupSelect01">Rating</label>
+  </div>
+  <select class="custom-select" id="inputGroupSelect01">
+    <option selected>Choose...</option>
+    <option value="1">⭐</option>
+    <option value="2">⭐⭐</option>
+    <option value="3">⭐⭐⭐</option>
+    <option value="4">⭐⭐⭐⭐</option>
+    <option value="5">⭐⭐⭐⭐⭐</option>
+  </select>
+</div>
+                  
                 <textarea class="form-control" name="reviewText" id="reviewText" aria-label="With textarea" rows="4" cols="50">
                 Write your review...
                 </textarea>
@@ -124,37 +121,16 @@ if(isset($_POST["submit"])){
                 <input type="hidden" name="hidden_description" value="<?php echo $attribute->description; ?>" />
                 <input type="hidden" name="hidden_movieID" value="<?php echo $attribute->movie_id; ?>" />  
                 <input type="submit" name="submit" style="margin-top:5px;" class="btn btn-success" value="Submit" />  
-            </div>  
+  </div>
+</div>
         </form>  
+
     </div> 
     <?php
     } 
     ?> 
 
-    <!-- <nav aria-label="Page navigation example"> 
-					<div class = "text-center">
-					<ul class="pagination">
-						<li class="page-item">
-							<a class="page-link" href="#" aria-label="Previous">
-								<span aria-hidden="true">&laquo;</span>
-							</a>
-					
-						</li>
-						<li class="page-item"><a class="page-link" href="#">1</a></li>
-						<li class="page-item"><a class="page-link" href="#">2</a></li>
-						<li class="page-item"><a class="page-link" href="#">3</a></li>
-						<li class="page-item"><a class="page-link" href="#">4</a></li>
-						<li class="page-item"><a class="page-link" href="#">5</a></li>
-
-
-						<li class="page-item">
-							<a class="page-link" href="#" aria-label="Next">
-								<span aria-hidden="true">&raquo;</span>
-							</a>
-						</li>
-					</ul>
-				</div>
-				</nav>-->
 </div>			
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 </html>

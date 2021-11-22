@@ -9,7 +9,6 @@ if ($userID===0){
   die();
 }
 
-//$userID=19;
 if(isset($_POST["submit"])){ 
 
   $movieID = (int)$_POST["hidden_movieID"];
@@ -93,90 +92,80 @@ if(isset($_POST["submit"])){
   <h3 style="margin-left:20px">Saved Movies - Review Now!</h3>
   <hr></hr>
   <div class="container" style="width:700px;">
+  
   <?php
-
 $response1=$db_client->call("getSaved",$userID);
 foreach($response1 as $attribute1){
 ?> 
-<div class="col-md-4">
-      <form action="home.php" method="post">  
-        <div style="border:1px solid #333; background-color:#f1f1f1; border-radius:5px; padding:16px;" align="center">  
-            <!--<img src="<?//php echo $row["imageLink"]; ?>" class="img-responsive" /><br /> --> 
-            <h4 class="text-info"><?php echo $attribute1->title; ?></h4>  
-            <h4 class="text-info"><?php echo $attribute1->description; ?></h4>  
-            <h4>Rate This Movie!</h4>
-                <div class="btn-group" style="height:3rem; padding:5px;" role="group" aria-label="Basic radio toggle button group">
-                    
-                    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" value="1" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="btnradio1">⭐</label>
 
-                    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" value="2" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="btnradio2">⭐⭐ </label>
+<div class = "container">
+          <form action="home.php" method="post">  
 
-                    <input type="radio" class="btn-check" name="btnradio" id="btnradio3" value="3" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="btnradio3">⭐⭐⭐ </label>
-                                    
-                    <input type="radio" class="btn-check" name="btnradio" id="btnradio4" value="4"autocomplete="off">					
-                    <label class="btn btn-outline-primary" for="btnradio4">⭐⭐⭐⭐ </label>
+          <div class="card" style="width: 40vw;">
+          <div class="card-body">
+          <h4 class="card-title"><?php echo $attribute1->title; ?></h4>  
+          <h6 class="card-subtitle mb-2 text-muted"><?php echo $attribute1->description; ?></h6>
+          <h4>Rate This Movie!</h4>
 
-                    <input type="radio" class="btn-check" name="btnradio" id="btnradio5" value="5"autocomplete="off" >
-                    <label class="btn btn-outline-primary" for="btnradio5">⭐⭐⭐⭐⭐ </label>
-                </div>
+  <div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <label class="input-group-text" for="inputGroupSelect01">Rating</label>
+  </div>
+  <select class="custom-select" id="inputGroupSelect01">
+    <option selected>Choose...</option>
+    <option value="1">⭐</option>
+    <option value="2">⭐⭐</option>
+    <option value="3">⭐⭐⭐</option>
+    <option value="4">⭐⭐⭐⭐</option>
+    <option value="5">⭐⭐⭐⭐⭐</option>
+  </select>
+</div>
+          
                 <textarea class="form-control" name="reviewText" id="reviewText" aria-label="With textarea" rows="4" cols="50">
                 Write your review...
                 </textarea>
-            <input type="hidden" name="hidden_title" value="<?php echo $attribute1->title; ?>" />  
-            <input type="hidden" name="hidden_description" value="<?php echo $attribute1->description; ?>" />
-            <input type="hidden" name="hidden_movieID" value="<?php echo $attribute1->movie_id; ?>" />  
-            <input type="submit" name="submit" style="margin-top:5px;" class="btn btn-success" value="submit" />  
-        </div>  
-    </form>  
-</div> 
+                <input type="hidden" name="hidden_title" value="<?php echo $attribute1->title; ?>" />  
+                <input type="hidden" name="hidden_description" value="<?php echo $attribute1->description; ?>" />
+                <input type="hidden" name="hidden_movieID" value="<?php echo $attribute1->movie_id; ?>" />  
+                <input type="submit" name="submit" style="margin-top:5px;" class="btn btn-success" value="Submit" />  
+  </div>
+</div>
+        </form>  
+    </div> 
 <?php
 } 
     ?> 
-  </div>
 <br></br>
   <h3 style="margin-left:20px">Past Reviews</h3>
 <hr>
 
-<!-- REVIEWED MOVIES -->
+<!-- PAST REVIEWES -->
 
-<div class="container">
   <?php
 
 $response2=$db_client->call("getReviews",$userID);
 foreach($response2 as $attribute2){
-
   ?> 
-    <div class="col-md-4">  
-      <form method="POST">
-            <div style="border:1px solid #333; background-color:#f1f1f1; border-radius:5px; padding:16px;" align="center">  
-                <!-- <img src="<?php //echo $row["imageLink"]; ?>" class="img-responsive" /><br />   -->
-                <h4 class="text-info"><?php echo $attribute2->title; ?></h4>  
-                <h4 class="text-info">$ <?php echo $attribute2->description; ?></h4>  
-                <h4 class="text-info">$ <?php echo $attribute2->reviewRating; ?></h4> 
-                <h4 class="text-info">$ <?php echo $attribute2->reviewText; ?></h4>  
-                <input type="hidden" name="hidden_title" value="<?php echo $attribute2->title; ?>" />  
-                <input type="hidden" name="hidden_description" value="<?php echo $attribute->description; ?>" />
-                <input type="hidden" name="hidden_movieID" value="<?php echo $attribute2->movie_id; ?>" />  
-                <a type="button" href="movie.php?movie_id=<?php echo $attribute2->movie_id;?>"style="margin-top:5px;" class="btn btn-success">See what other people are saying!</a>  
-            </div> 
-        </form> 
+  <div class="container">
+  <form method="POST">
+    <div class="card" style="width: 40vw;">  
+    <div class="card-body">
+    <h4 class="card-title"><?php echo $attribute2->title; ?></h4>
+    <h4 class="card-subtitle mb-2 text-muted"><?php echo $attribute2->description;?></h4>  
+    <h4 class="text-info"><?php echo $attribute2->reviewRating; ?></h4> 
+    <h4 class="text-info"><?php echo $attribute2->reviewText; ?></h4>  
+    <input type="hidden" name="hidden_title" value="<?php echo $attribute2->title; ?>" />  
+    <input type="hidden" name="hidden_description" value="<?php echo $attribute->description; ?>" />
+    <input type="hidden" name="hidden_movieID" value="<?php echo $attribute2->movie_id; ?>" />  
+    <a type="button" href="movie.php?movie_id=<?php echo $attribute2->movie_id;?>"style="margin-top:5px;" class="btn btn-success">See what other people are saying!</a>  
     </div> 
+</div>
+  </form> 
+  </div> 
     <?php
     }
     ?> 
   </div>
-  <!-- Optional JavaScript; choose one of the two! -->
-
-  <!-- Option 1: Bootstrap Bundle with Popper -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
-  <!-- Option 2: Separate Popper and Bootstrap JS -->
-  <!--
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-    -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 </html>
