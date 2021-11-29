@@ -1,21 +1,26 @@
 <?php
+session_start();
 
+error_reporting(E_ALL);
 require_once __DIR__ . "/../include/rpc_client.php";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if (isset($_POST["register"])) {
     $username = $_POST["username"];
     $password = $_POST["password"];
     $email = $_POST["email"];
+    $_SESSION['usernameE']=$username;
+    $_SESSION['emailE']=$email;
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $emailErr = "Invalid email format";
+      $emailErr = "Invalid email format";
     }
     $db_client = new DatabaseRpcClient();
-
-    if ($db_client->call("register", $username, $password, $email)) {
-        echo "Success";
-    } //else {
-    //     echo "Failure";
-    // }
+    $hold =$db_client->call("register", $username, $password, $email);
+    
+    //if($hold) {
+    $messageSubject="Cinema5D - Welcome!";
+    $body= "Hi ".$username."!\r\n Welcome to Cinema5D! The best movie review site on the internet. Thank you for making an account with us. \r\n To get started, head on over to fill out your preferences form now!";
+    mail($email, $messageSubject, $body);
+    //} 
 }
 ?>
 <!DOCTYPE html>
@@ -41,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             Password
             <input type="password" name="password" id="input-password">
         </label>
-        <input type="submit" value="Register" >
+        <input type="submit" name ="register" value="Register" >
     </form>
 </body>
 

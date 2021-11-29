@@ -9,15 +9,13 @@ if ($userID===0){
   die();
 }
 
-
-//$userID=19;
 if(isset($_POST["submit"])){ 
 
   $movieID = (int)$_POST["hidden_movieID"];
   $reviewText=$_POST["reviewText"];
 
-  if(isset($_POST["btnradio"])){
-      switch($_POST["btnradio"]){
+  if(isset($_POST["star"])){
+      switch($_POST["star"]){
         case "1":
           $reviewRating=1;
           break;
@@ -104,13 +102,13 @@ if(isset($_POST["submit"])){
   <div class="input-group-prepend">
     <label class="input-group-text" for="inputGroupSelect01">Rating</label>
   </div>
-  <select class="custom-select" id="inputGroupSelect01">
+  <select class="custom-select" id="inputGroupSelect01" name ="star">
     <option selected>Choose...</option>
-    <option value="1">⭐</option>
-    <option value="2">⭐⭐</option>
-    <option value="3">⭐⭐⭐</option>
-    <option value="4">⭐⭐⭐⭐</option>
-    <option value="5">⭐⭐⭐⭐⭐</option>
+    <option name="star" value="1">⭐</option>
+    <option name = "star" value="2">⭐⭐</option>
+    <option name = "star" value="3">⭐⭐⭐</option>
+    <option name = "star" value="4">⭐⭐⭐⭐</option>
+    <option name = "star" value="5">⭐⭐⭐⭐⭐</option>
   </select>
 </div>
                   

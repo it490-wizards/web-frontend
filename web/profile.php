@@ -1,21 +1,28 @@
 <?php 
+session_start();
 
 $session_token = $_COOKIE["session_token"]??null;
 require_once __DIR__ . "/../include/rpc_client.php";
 $db_client = new DatabaseRpcCLient();
 $userID=$db_client->call("session_to_userid", $session_token);
+
+$_SESSION['userIDE']=$userID;
+
 if ($userID===0){
+
   http_response_code(403);
   die();
 }
 
 if(isset($_POST["submit"])){ 
 
+echo $userID;
+  
   $movieID = (int)$_POST["hidden_movieID"];
   $reviewText=$_POST["reviewText"];
 
-  if(isset($_POST["btnradio"])){
-      switch($_POST["btnradio"]){
+  if(isset($_POST["star"])){
+      switch($_POST["star"]){
         case "1":
           $reviewRating=1;
           break;
@@ -111,13 +118,13 @@ foreach($response1 as $attribute1){
   <div class="input-group-prepend">
     <label class="input-group-text" for="inputGroupSelect01">Rating</label>
   </div>
-  <select class="custom-select" id="inputGroupSelect01">
+  <select class="custom-select" id="inputGroupSelect01" name = "star">
     <option selected>Choose...</option>
-    <option value="1">⭐</option>
-    <option value="2">⭐⭐</option>
-    <option value="3">⭐⭐⭐</option>
-    <option value="4">⭐⭐⭐⭐</option>
-    <option value="5">⭐⭐⭐⭐⭐</option>
+    <option name = "star"value="1">⭐</option>
+    <option name = "star"value="2">⭐⭐</option>
+    <option name = "star"value="3">⭐⭐⭐</option>
+    <option name = "star"value="4">⭐⭐⭐⭐</option>
+    <option name = "star" value="5">⭐⭐⭐⭐⭐</option>
   </select>
 </div>
           
@@ -127,7 +134,7 @@ foreach($response1 as $attribute1){
                 <input type="hidden" name="hidden_title" value="<?php echo $attribute1->title; ?>" />  
                 <input type="hidden" name="hidden_description" value="<?php echo $attribute1->description; ?>" />
                 <input type="hidden" name="hidden_movieID" value="<?php echo $attribute1->movie_id; ?>" />  
-                <input type="submit" name="submit" style="margin-top:5px;" class="btn btn-success" value="Submit" />  
+                <input type="submit" name="submit" style="margin-top:5px;" class="btn btn-success" value="submit" />  
   </div>
 </div>
         </form>  
@@ -139,7 +146,7 @@ foreach($response1 as $attribute1){
   <h3 style="margin-left:20px">Past Reviews</h3>
 <hr>
 
-<!-- PAST REVIEWES -->
+<!-- PAST REVIEWS -->
 
   <?php
 
