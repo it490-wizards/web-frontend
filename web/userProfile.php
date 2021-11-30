@@ -63,11 +63,31 @@ if ($userID===0){
 
      foreach($response1 as $attribute1){
   ?> 
-<h5 class="text-info">   <?php echo $attribute1->username;?></h5>
-<h5 class="text-info">Number of Followers: <?php echo $attribute1->followers;?></h5>
-<hr></hr>
+
+<center>
+      <h5 class="text-info"><?php echo $attribute1->username;?></h5>
+      <h5 class="text-info"><?php 
+      $countFollowers=(int)$attribute1->followers;
+      if($countFollowers <= 3){
+        $memberType="Bronze";
+      }elseif($countFollowers > 3 && $countFollowers <= 5){
+        $memberType="Silver";
+      }else{
+        $memberType="Gold";
+      }
+      echo $memberType;
+      ?> Member: <?php echo $attribute1->followers;?> Followers 
+      <?php 
+      if ($memberType="Bronze"){
+        echo "\r\n You need " . 4-$countFollowers . " follower(s) to get to Silver and " . 6-$countFollowers . " to get to Gold!\r\n Review more movies to make your profile more visible!";
+      }elseif($memberType="Silver"){
+        echo "You need " . 6-$countFollowers . " follower(s) to get to Gold!\r\n Review more movies to make your profile more visible!";
+      }
+      ?></h5>
+  </center>
+  <hr></hr>
 <div class="container">
-<form method="POST" action = "userProfile.php">
+<form method="POST">
 <div class="card" style="width: 40vw;">  
 <div class="card-body">  
 <h3 class="text-info"><?php echo $attribute1->title;?></h3>  
@@ -75,14 +95,11 @@ if ($userID===0){
 <h3 class="card-subtitle mb-2 text-muted">Rating: <?php echo $attribute1->reviewRating;?></h3>
 <h3 class="text-info">Review: <?php echo $attribute1->reviewText;?></h3>  
 <a type="button" href="movie.php?movie_id=<?php echo $attribute1->movie_id;?>"style="margin-top:5px;" class="btn btn-success">Check out this movie's page and reviews!</a>  
-
 </div>
 </div>
 </form> 
 </div> 
-
 <?php } ?>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 </html>

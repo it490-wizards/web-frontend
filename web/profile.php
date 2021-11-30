@@ -96,18 +96,26 @@ if(isset($_POST["submit"])){
       <h5 class="text-info"><?php 
       $countFollowers=(int)$attributeA->followers;
       if($countFollowers <= 3){
-        $_SESSION['memberType']="Bronze";
+        $memberType="Bronze";
       }elseif($countFollowers > 3 && $countFollowers <= 5){
-        $_SESSION['memberType']="Silver";
+        $memberType="Silver";
       }else{
-        $_SESSION['memberType']="Gold";
+        $memberType="Gold";
       }
-      ?> Member!</h5>
-      <h5 class="text-info">Number of Followers:<?php echo $attributeA->followers;?></h5>
+      echo $memberType;
+      $_SESSION['memberType']=$memberType;
+      ?> Member: <?php echo $attributeA->followers;?> Followers 
+      <?php 
+      if ($memberType="Bronze"){
+        echo "\r\n You need " . 4-$countFollowers . " follower(s) to get to Silver and " . 6-$countFollowers . " to get to Gold!\r\n Review more movies to make your profile more visible!";
+      }elseif($memberType="Silver"){
+        echo "You need " . 6-$countFollowers . " follower(s) to get to Gold!\r\n Review more movies to make your profile more visible!";
+      }
+      ?></h5>
       </center>
     </div>
   </div>
-
+  <hr></hr>
 <?php } ?>
 
   <!-- FILL OUT FORM -->
@@ -242,7 +250,7 @@ foreach($response4 as $attribute4){
     </div> 
 </div>
 </form>   
-  </div>
+</div>
   <?php
     }
   ?> 

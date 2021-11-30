@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 $session_token = $_COOKIE["session_token"]??null;
 require_once __DIR__ . "/../include/rpc_client.php";
 $db_client = new DatabaseRpcCLient();
