@@ -9,11 +9,11 @@ if ($userID===0){
   die();
 }
 
-if(isset($_POST["follow"])){
+/*if(isset($_POST["follow"])){
   $followerID=$userID;
   $followedID=$_POST["hidden_userID"];
   $db_client->call("addFollow", $followerID, $followedID);
-}
+}*/
 ?>
 
 <!doctype html>
@@ -27,7 +27,7 @@ if(isset($_POST["follow"])){
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-  <title>Movie Page!</title>
+  <title>User Page</title>
 </head>
 
 <body>
@@ -57,39 +57,32 @@ if(isset($_POST["follow"])){
   </nav>
 
   <?php
-     $movieID=(int)$_GET["movie_id"]; //gets from URL
-     $response1=$db_client->call("getMovie",$movieID);
+     $userID=(int)$_GET["userID"]; //gets from URL
+     $userPageID=$userID;
+     $response1=$db_client->call("getUserReviews",$userPageID);
 
      foreach($response1 as $attribute1){
   ?> 
-<h6>     Movie</h6>
-<h5 class="text-info">   <?php echo $attribute1->title;?></h5>
-<h6>     Summary</h6>
-<h5 class="text-info">   <?php echo $attribute1->description;?></h5>
+<h5 class="text-info">   <?php echo $attribute1->username;?></h5>
+<h5 class="text-info">Number of Followers: <?php echo $attribute1->followers;?></h5>
 <hr></hr>
-
-<?php } ?>
-
-<?php
-    $response2=$db_client->call("getAllReviews", $movieID);
-
-    foreach($response2 as $attribute2){
-?> 
-
 <div class="container">
-<form method="POST" action = "movie.php">
+<form method="POST" action = "userProfile.php">
 <div class="card" style="width: 40vw;">  
-<div class="card-body">
-<h5 class="card-title">User: <?php echo $attribute2->username;?></h5>  
-<h3 class="card-subtitle mb-2 text-muted">Rating: <?php echo $attribute2->reviewRating;?></h3>
-<h3 class="text-info">Review: <?php echo $attribute2->reviewText;?></h3>  
-<input type="hidden" name="hidden_userID" value="<?php echo $attribute2->$userID;?>">
-<a type="button" name="follow" style="margin-top:5px;" class="btn btn-success">Follow User</a>
+<div class="card-body">  
+<h3 class="text-info"><?php echo $attribute1->title;?></h3>  
+<h3 class="text-info"><?php echo $attribute1->description;?></h3>  
+<h3 class="card-subtitle mb-2 text-muted">Rating: <?php echo $attribute1->reviewRating;?></h3>
+<h3 class="text-info">Review: <?php echo $attribute1->reviewText;?></h3>  
+<a type="button" href="movie.php?movie_id=<?php echo $attribute1->movie_id;?>"style="margin-top:5px;" class="btn btn-success">Check out this movie's page and reviews!</a>  
+
 </div>
 </div>
 </form> 
 </div> 
+
 <?php } ?>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 </html>
