@@ -1,4 +1,7 @@
 <?php 
+ini_set('display_errors',1);
+ini_set('display_startup_errors',1);
+error_reporting(E_ALL);
 session_start();
 
 $session_token = $_COOKIE["session_token"]??null;
@@ -82,10 +85,14 @@ if(isset($_POST["submit"])){
     </div>
   </nav>
 
+  <center><h2 class="text-info" >Profile Page!</h2></center>
+
+
   <!-- TYPE OF USER -->
 
   <?php
-     $responseA=$db_client->call("getUserReviews",$userID);
+     $userPageID=$userID;
+     $responseA=$db_client->call("getUserReviews",$userPageID);
      foreach($responseA as $attributeA){
   ?> 
 
@@ -103,20 +110,25 @@ if(isset($_POST["submit"])){
         $memberType="Gold";
       }
       echo $memberType;
-      $_SESSION['memberType']=$memberType;
-      ?> Member: <?php echo $attributeA->followers;?> Followers 
+      ?> Member: <?php echo $attributeA->followers;?> Followers(s)... 
       <?php 
+      $x=4-$countFollowers;
+      $y=6-$countFollowers;
       if ($memberType="Bronze"){
-        echo "\r\n You need " . 4-$countFollowers . " follower(s) to get to Silver and " . 6-$countFollowers . " to get to Gold!\r\n Review more movies to make your profile more visible!";
+        echo "\n";
+
+        echo "\r\n You need " . $x . " follower(s) to get to Silver and " . $y . " to get to Gold! Review movies to make your profile visible!";
       }elseif($memberType="Silver"){
-        echo "You need " . 6-$countFollowers . " follower(s) to get to Gold!\r\n Review more movies to make your profile more visible!";
+        echo "\n";
+
+        echo "You need " . $y . " follower(s) to get to Gold! Review movies to make your profile visible!";
       }
       ?></h5>
       </center>
     </div>
   </div>
   <hr></hr>
-<?php } ?>
+<?php break; } ?>
 
   <!-- FILL OUT FORM -->
 

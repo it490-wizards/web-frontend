@@ -41,7 +41,7 @@
  <!-- RANKINGS -->
 
   <?php
-     $responseA=$db_client->call("getRankings");
+     $responseA=$db_client->call("getRankings");     
      foreach($responseA as $attributeA){
   ?> 
 
@@ -59,13 +59,20 @@
       }else{
         $memberType="Gold";
       }
-      echo $memberType;
-      ?> Member: <?php echo $attributeA->followers;?> Followers 
-      <?php 
+      echo $memberType . " Member";?></h3> 
+      
+    <h3 class="text-info"><?php echo $attributeA->followers . " Follower(s)";?></h3>
+    <h3><?php 
+      $x=4-$countFollowers;
+      $y=6-$countFollowers;
       if ($memberType="Bronze"){
-        echo "\r\n User needs " . 4-$countFollowers . " follower(s) to get to Silver and " . 6-$countFollowers . " to get to Gold!\r\n";
+        echo "\n";
+
+        echo "\r\n They need " . $x . " follower(s) to get to Silver and " . $y . " to get to Gold!";
       }elseif($memberType="Silver"){
-        echo "User needs " . 6-$countFollowers . " follower(s) to get to Gold!";
+        echo "\n";
+
+        echo "They need " . $y . " follower(s) to get to Gold!";
       }
       ?></h3>
     <a type="button" href="userProfile.php?user_id=<?php echo $attributeA->userID;?>"style="margin-top:5px;" class="btn btn-success">Go to user's page!</a>  

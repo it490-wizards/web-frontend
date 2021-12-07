@@ -1,5 +1,7 @@
 <?php
-
+ini_set('display_errors',1);
+ini_set('display_startup_errors',1);
+error_reporting(E_ALL);
 $session_token = $_COOKIE["session_token"]??null;
 require_once __DIR__ . "/../include/rpc_client.php";
 $db_client = new DatabaseRpcCLient();
@@ -56,8 +58,10 @@ if ($userID===0){
     </div>
   </nav>
 
+  <center><h2 class="text-info" >User Page!</h2></center>
+
   <?php
-     $userID=(int)$_GET["userID"]; //gets from URL
+     $userID=(int)$_GET["user_id"]; //gets from URL
      $userPageID=$userID;
      $response1=$db_client->call("getUserReviews",$userPageID);
 
@@ -76,12 +80,18 @@ if ($userID===0){
         $memberType="Gold";
       }
       echo $memberType;
-      ?> Member: <?php echo $attribute1->followers;?> Followers 
+      ?> Member: <?php echo $attribute1->followers;?> Follower(s)...
       <?php 
+      $x=4-$countFollowers;
+      $y=6-$countFollowers;
       if ($memberType="Bronze"){
-        echo "\r\n You need " . 4-$countFollowers . " follower(s) to get to Silver and " . 6-$countFollowers . " to get to Gold!\r\n Review more movies to make your profile more visible!";
+        echo "\n";
+
+        echo "\r\n They need " . $x . " follower(s) to get to Silver and " . $y . " to get to Gold!";
       }elseif($memberType="Silver"){
-        echo "You need " . 6-$countFollowers . " follower(s) to get to Gold!\r\n Review more movies to make your profile more visible!";
+        echo "\n";
+
+        echo "They need " . $y . " follower(s) to get to Gold!";
       }
       ?></h5>
   </center>

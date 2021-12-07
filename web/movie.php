@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors',1);
+ini_set('display_startup_errors',1);
+error_reporting(E_ALL);
 session_start();
 $session_token = $_COOKIE["session_token"]??null;
 require_once __DIR__ . "/../include/rpc_client.php";
@@ -13,6 +16,7 @@ if(isset($_POST["follow"])){
   $followerID=$userID;
   $followedID=$_POST["hidden_userID"];
   $db_client->call("addFollow", $followerID, $followedID);
+
 }
 ?>
 
@@ -57,10 +61,11 @@ if(isset($_POST["follow"])){
   </nav>
 
   <?php
-     $movieID=(int)$_GET["movie_id"]; //gets from URL
+     $movieID=$_GET["movie_id"]; //gets from URL
      $response1=$db_client->call("getMovie",$movieID);
 
      foreach($response1 as $attribute1){
+       
   ?> 
 <h6>     Movie</h6>
 <h5 class="text-info">   <?php echo $attribute1->title;?></h5>
@@ -77,14 +82,14 @@ if(isset($_POST["follow"])){
 ?> 
 
 <div class="container">
-<form method="POST" action = "movie.php">
+<form method="POST">
 <div class="card" style="width: 40vw;">  
 <div class="card-body">
 <h5 class="card-title">User: <?php echo $attribute2->username;?></h5>  
 <h3 class="card-subtitle mb-2 text-muted">Rating: <?php echo $attribute2->reviewRating;?></h3>
 <h3 class="text-info">Review: <?php echo $attribute2->reviewText;?></h3>  
-<input type="hidden" name="hidden_userID" value="<?php echo $attribute2->$userID;?>">
-<a type="button" name="follow" style="margin-top:5px;" class="btn btn-success">Follow User</a>
+<input type="hidden" name="hidden_userID" value="<?php echo $attribute2->userID;?>"/>
+<input type="submit" name="follow" style="margin-top:5px;" class="btn btn-success" value ="Follow User"/>
 </div>
 </div>
 </form> 

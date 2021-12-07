@@ -74,6 +74,9 @@ if(isset($_POST["submit"])){
           <li class="nav-item">
             <a class="nav-link" href="forum">Forum</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="rankings.php">Rankings</a>
+          </li>
         </ul>
       </div>
     </div>
